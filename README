@@ -1,0 +1,22 @@
+Files for "Intermediate C Programming"
+UW Experimental College
+Winter, 1999
+Steve Summit
+
+The top-level directory (the one containing this README file)
+contains the source files for the first (week 1) version of the
+game.  The week# directories contain additional code we'll be
+adding in the weeks to come.
+
+You can either grab the files one at a time, or download the
+single file game.tar.Z, which is a compressed archive of all of
+them.  If you grab this file, remember to use ftp "binary" mode.
+After retrieving it, you can uncompress it and extract the
+archive contents with the commands
+
+	uncompress game.tar.Z
+	tar xvf game.tar
+
+(These invocations assume you're on a Unix system, although
+versions of the commands exist for other operating systems as
+well.  If you don't have the uncompress command, try using gunzip.)
