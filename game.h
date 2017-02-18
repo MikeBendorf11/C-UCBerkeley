@@ -15,7 +15,6 @@ struct object
 	{
 	char name[MAXNAME];
 	char * description;
-	//char description[MAXDESCS];//+ My version
 	struct object *lnext;		/* next in list of contained objects */
 					/* (i.e. in this object's container) */
 	};
@@ -32,11 +31,17 @@ struct room
 	{
 	char name[MAXNAME];
 	char * description;
-	//char description[MAXDESCS];//+
 	struct object *contents;
 	struct room *exits[NEXITS];
 	};
 
+/*+*/struct sentence
+	{
+	char *verb;
+	struct object *object;
+	char *preposition;
+	struct object *xobject;	/* object of preposition */
+	};//+
 /* direction indices in exits array: */
 
 #define NORTH		0
@@ -59,12 +64,14 @@ struct room
 #define CONTINUE	2	/* command not completed */
 #define ERROR		3	/* internal error */
 
-extern int parseline(char *, char **, char **);
-extern docommand(struct actor *, char *, char *);
+extern int parseline(struct actor *, char *, struct sentence *);//+
+extern docommand(struct actor *, struct sentence *);//+
 
 extern int readdatafile(void);
 extern int dumpdata(char *);
 
+char *plural(char *);//+
+char * getLast(char * );//+
 extern struct object *newobject(char *);
 extern struct object *findobject(struct actor *, char *);
 extern int contains(struct object *, struct object *);

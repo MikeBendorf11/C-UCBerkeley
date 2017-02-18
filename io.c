@@ -59,36 +59,18 @@ while(fgetline(fp, line, MAXLINE) != EOF)
 		else if(strcmp(av[1], "end") != 0)
 			{
 			currentroom = newroom(av[1]);
-		/*	if(strcmp(av[2], "description") == 0 )//+
-				{
-				int i, position, limit;
-				position = strlen(av[0]) + strlen(av[1]) 
-					+ strlen(av[2]) + 3;
-				limit = strlen(lineCopy)-position;
-				for(i=0; i<limit; i++, position++)
-					currentroom->description[i]=lineCopy[position];
-				}*/
 			}
 		}
 	
 	else if(strcmp(av[0], "object") == 0)///////////////////////
 		{
-			/*this shit does nothing //+
-		/*currentobject = NULL;	/* finish previous object */
+	
 		if(ac < 2)
 			fprintf(stderr, "missing object name\n");
 		else if(strcmp(av[1], "end") != 0)
 			{
 			currentobject = newobject(av[1]);
-			/*if(strcmp(av[2], "description") == 0 )//+
-				{
-				int i, position, limit;
-				position = strlen(av[0]) + strlen(av[1]) 
-					+ strlen(av[2]) + 3;
-				limit = strlen(lineCopy)-position;
-				for(i=0; i<limit; i++, position++)
-					currentobject->description[i]=lineCopy[position];
-				}*/
+		
 			/* temporary hardwired put in room: */
 			currentobject->lnext = currentroom->contents;
 			currentroom->contents = currentobject;
@@ -104,13 +86,6 @@ while(fgetline(fp, line, MAXLINE) != EOF)
 			currentobject->description = chkstrdup(p);
 		else 
 			currentroom->description = chkstrdup(p);
-		
-		/* 1. 
-		 * 2. while av[0] != room, object
-		 * 3. get another line
-		 * 4. check current allocation to desc string
-		 * 5. if to little reallocate
-		 * 6. otherwise copy the current line*/
 	}
 
 	else if(strcmp(av[0], "roomexits") == 0)	/* temporary */

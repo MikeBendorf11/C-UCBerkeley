@@ -5,21 +5,15 @@
 
 #define MAXARGS 10
 
-/* First, simpleminded version:					*/
+/* Second, slightly smarter version:				*/
 /* splits command line into words,				*/
-/* assumes either "verb" or "verb object"			*/
-/* (examples: "look", "north", "get axe", "drop vase").		*/
-/* Returns both verb and object as strings, using pointers.	*/
-/* So verbp and objp parameters are type "pointer to string",	*/
-/* or pointer-to-pointer-to-char.				*/
-/* (Typically, the caller will declare char * variables		*/
-/* to receive these two words, and will pass pointers to them	*/
-/* when calling parseline, e.g. the call			*/
-/*	parseline(line, &verb, &object)				*/
-/* in main.c.)							*/
+/* assumes "verb", "verb object", or				*/
+/* "verb object preposition object2"				*/
+/* (examples: "look", "north", "get axe", "drop vase",		*/
+/* "hit nail with hammer").					*/
 
 int
-parseline(char *line, char **verbp, char **objp)
+parseline(struct actor *actor, char *line, struct sentence *cmd)
 {
 int ac;
 char *av[MAXARGS];
@@ -32,16 +26,37 @@ if(ac < 1)
 	return FALSE;
 	}
 
-if(ac > 2)
+cmd->verb = cmd->preposition = NULL;
+cmd->object = cmd->xobject = NULL;
+
+if(ac > 4)
 	{
 	printf("command too complicated\n");
 	return FALSE;
 	}
 
-*verbp = av[0];
-if(ac > 1)
-	*objp = av[1];
-else	*objp = NULL;
+cmd->verb = av[0];
+
+if(ac < 2)
+	cmd->object = NULL;
+else if((cmd->object = findobject(actor, av[1])) == NULL) // ac>=2
+	{
+	printf("I don't see any %s here.\n", plural(av[1]));
+	return FALSE;
+	}
+/*+ changed from 2 to 3, stopped crash
+* If 3 args only return TRUE then main/ !parseline > continue*/
+if(ac > 3)
+	{
+	cmd->preposition = av[2];
+		cmd->xobject = findobject(actor, av[3]);\
+
+	if(cmd->xobject == NULL)
+		{
+		printf("I don't see any %s here.\n", plural(av[3]));
+		return FALSE;
+		}
+	}
 
 return TRUE;
 }

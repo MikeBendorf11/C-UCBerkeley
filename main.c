@@ -25,13 +25,12 @@ static struct actor player;
 main()
 {
 char line[MAXLINE];
-char *verb, *object;
+struct sentence cmd;//+
 
-	if(!readdatafile())
+if(!readdatafile())
 		exit(1);
 
 	gotoroom(&player, getentryroom());	/* put actor in initial room */
-
 
 listroom(&player);
 
@@ -42,12 +41,11 @@ while(TRUE)
 	
 	if(getline(line, MAXLINE) == EOF)
 		break;
-
-	if(!parseline(line, &verb, &object))
+	if(!parseline(&player, line, &cmd)) // need FALSE to continue
 		continue;
 
-	docommand(&player, verb, object);
-	}
+	docommand(&player, &cmd);
+	}//+
 
 return 0;
 }

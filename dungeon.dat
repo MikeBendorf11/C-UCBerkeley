@@ -5,7 +5,7 @@ room house
 desc There is nowhere else to go around. 
 
 room entry
-desc Now you are locked inside. 
+desc You are locked inside. 
 room hall
 
 room bedroom
@@ -13,14 +13,14 @@ object bed
 desc a small one. You can put it on your shoulder if you want.
 
 room closet
-object diamond
-desc a shiny little bastard. May be useful later down the road.
+object diamonds
+desc shiny little bastards. They might be useful later down the road.
 
 room kitchen
 object kettle
 
 room stairway
-desc Watch your way down...
+desc Watch your way...
 
 room basement
 desc Smells humid and smoky. 
@@ -45,5 +45,5 @@ roomexits hall s:entry n:kitchen w:bedroom
 roomexits bedroom e:hall
 roomexits kitchen s:hall e:stairway n:porch
 roomexits porch s:kitchen
-roomexits stairway w:basement e:kitchen
+roomexits stairway d:basement u:kitchen
 roomexits basement e:stairway w:tunnel
