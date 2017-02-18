@@ -12,12 +12,35 @@
 #include "game.h"
 #include "defs.h"
 
+#define MAXOBJECTS 100
+
+static struct object objects[MAXOBJECTS];
+static int nobjects = 0;
+
+struct object * newobject(char *name)
+{
+struct object *objp;
+
+if(nobjects >= MAXOBJECTS)
+	{
+	fprintf(stderr, "too many objects\n");
+	exit(1);
+	}
+
+objp = &objects[nobjects++];
+
+strcpy(objp->name, name);
+objp->lnext = NULL;
+
+return objp;
+}
+
+
 /* Find a named object in the actor's vicinity.		*/
 /* Returns a pointer to the object structure if found;	*/
 /* returns NULL if not found.				*/
 
-struct object *
-findobject(struct actor *actp, char *name)
+struct object * findobject(struct actor *actp, char *name)
 {
 struct object *lp;
 
@@ -50,8 +73,7 @@ return NULL;
 /*	if(!contains(actor->contents, obj))			*/
 /*		printf("You don't have the %s.", obj->name);	*/
 
-int
-contains(struct object *list, struct object *objp)
+int contains(struct object *list, struct object *objp)
 {
 struct object *lp;
 

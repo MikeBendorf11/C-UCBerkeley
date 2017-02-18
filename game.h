@@ -9,10 +9,13 @@
 #include <stdio.h>
 
 #define MAXNAME 20	/* maximum length of object or room name */
+#define MAXDESCS 100 /* maximum lenght of room and object descriptions+*/
 
 struct object
 	{
 	char name[MAXNAME];
+	char * description;
+	//char description[MAXDESCS];//+ My version
 	struct object *lnext;		/* next in list of contained objects */
 					/* (i.e. in this object's container) */
 	};
@@ -23,11 +26,13 @@ struct actor
 	struct object *contents;	/* possessions */
 	};
 
-#define NEXITS 4
+#define NEXITS 10
 
 struct room
 	{
 	char name[MAXNAME];
+	char * description;
+	//char description[MAXDESCS];//+
 	struct object *contents;
 	struct room *exits[NEXITS];
 	};
@@ -38,6 +43,14 @@ struct room
 #define SOUTH		1
 #define EAST		2
 #define WEST		3
+#define NORTHEAST	4
+#define NORTHWEST	5
+#define SOUTHEAST	6
+#define SOUTHWEST	7
+#define UP			8
+#define DOWN		9
+
+
 
 /* status return value for commands: */
 

@@ -51,7 +51,42 @@ else if(strcmp(verb, "e") == 0 || strcmp(verb, "east") == 0)
 	dircommand(player, EAST);
 else if(strcmp(verb, "w") == 0 || strcmp(verb, "west") == 0)
 	dircommand(player, WEST);
-else if(strcmp(verb, "take") == 0)
+else if(strcmp(verb, "ne") == 0 || strcmp(verb, "northeast") == 0)
+	dircommand(player, NORTHEAST);
+else if(strcmp(verb, "nw") == 0 || strcmp(verb, "northwest") == 0)
+	dircommand(player, NORTHWEST);
+else if(strcmp(verb, "se") == 0 || strcmp(verb, "southeast") == 0)
+	dircommand(player, SOUTHEAST);
+else if(strcmp(verb, "sw") == 0 || strcmp(verb, "southwest") == 0)
+	dircommand(player, SOUTHWEST);
+else if(strcmp(verb, "u") == 0 || strcmp(verb, "up") == 0)
+	dircommand(player, UP); 
+else if(strcmp(verb, "d") == 0 || strcmp(verb, "down") == 0)
+	dircommand(player, DOWN); //+
+else if(strcmp(verb, "examine") == 0)//+
+	{
+	if(object == NULL)
+		{
+		printf("You must tell what to examine.\n");
+		return FALSE;
+		}
+	objp = findobject(player, object);
+	if(objp == NULL)
+		{
+		printf("I see no %s here.\n", object);
+		return FALSE;
+		}
+	if(contains(player->location->contents, objp)
+		||contains(player->contents, objp))
+		{
+		if(objp->description==NULL)
+			printf("Nothing special about this object.\n");
+		else
+			printf("The %s is %s.\n", object, objp->description);
+		return FALSE;
+		}
+	}
+else if(strcmp(verb, "take") == 0) 
 	{
 	if(object == NULL)
 		{

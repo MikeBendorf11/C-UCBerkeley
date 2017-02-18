@@ -1,0 +1,49 @@
+room field
+desc You just woke up. You are in the middle of nowhere. 
+
+room house
+desc There is nowhere else to go around. 
+
+room entry
+desc Now you are locked inside. 
+room hall
+
+room bedroom
+object bed
+desc a small one. You can put it on your shoulder if you want.
+
+room closet
+object diamond
+desc a shiny little bastard. May be useful later down the road.
+
+room kitchen
+object kettle
+
+room stairway
+desc Watch your way down...
+
+room basement
+desc Smells humid and smoky. 
+object hammer
+
+object pliers
+room porch
+object doormat
+
+room tunnel
+desc Now you need to figure a way out of here. 
+object pick
+object shovel
+
+room end
+
+roomexits field n:house
+roomexits house s:field n:entry
+roomexits entry s:entry e:closet n:hall
+roomexits closet w:entry
+roomexits hall s:entry n:kitchen w:bedroom
+roomexits bedroom e:hall
+roomexits kitchen s:hall e:stairway n:porch
+roomexits porch s:kitchen
+roomexits stairway w:basement e:kitchen
+roomexits basement e:stairway w:tunnel
