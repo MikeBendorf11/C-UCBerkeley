@@ -17,7 +17,7 @@ static dircommand(struct actor *, int);
 
 docommand(struct actor *player, struct sentence *cmd)
 {
-char * ch; //+
+char * ch; 
 char *verb;
 struct object *objp;
 
@@ -33,7 +33,7 @@ else if(strcmp(verb, "e") == 0 || strcmp(verb, "east") == 0)
 	dircommand(player, EAST);
 else if(strcmp(verb, "w") == 0 || strcmp(verb, "west") == 0)
 	dircommand(player, WEST);
-/*+*/else if(strcmp(verb, "ne") == 0 || strcmp(verb, "northeast") == 0)
+else if(strcmp(verb, "ne") == 0 || strcmp(verb, "northeast") == 0)
 	dircommand(player, NORTHEAST);
 else if(strcmp(verb, "nw") == 0 || strcmp(verb, "northwest") == 0)
 	dircommand(player, NORTHWEST);
@@ -44,7 +44,7 @@ else if(strcmp(verb, "sw") == 0 || strcmp(verb, "southwest") == 0)
 else if(strcmp(verb, "u") == 0 || strcmp(verb, "up") == 0)
 	dircommand(player, UP); 
 else if(strcmp(verb, "d") == 0 || strcmp(verb, "down") == 0)
-	dircommand(player, DOWN); //+
+	dircommand(player, DOWN); 
 else if(strcmp(verb, "examine") == 0)
 	{
 	if(objp == NULL)
@@ -57,21 +57,21 @@ else if(strcmp(verb, "examine") == 0)
 		{
 		printf("I see no %s here.\n", objp);
 		return FALSE;
-		}*/// eliminated on week3 //+
+		}*/// eliminated on week3 
 	if(contains(player->location->contents, objp)
 		||contains(player->contents, objp))
 		{
-		if(objp->description==NULL)
+		if(objp->desc==NULL)
 			printf("Nothing special about this object.\n");
 		else
 			{
-			ch = getLast(objp->name); //+
+			ch = getLast(objp->name); 
 			printf("The %s %s %s.\n", objp, 
-				*ch=='s'?"are":"is" ,objp->description); //+ are
+				*ch=='s'?"are":"is" ,objp->desc); 
 			}
 		return FALSE;
 		}
-	}//+
+	}
 else if(strcmp(verb, "take") == 0)
 	{
 	if(objp == NULL)
@@ -92,16 +92,16 @@ else if(strcmp(verb, "take") == 0)
 		}
 	printf("Taken.\n");
 	}
-else if(strcmp(verb, "drop") == 0)////////////////////////
+else if(strcmp(verb, "drop") == 0)
 	{
 	if(objp == NULL)
 		{
 		printf("You must tell me what to drop.\n");
 		return FALSE;
 		}
-	if(!contains(player->contents, objp))
+	if(!contains(player->contents, objp)) //unreachable
 		{
-		printf("You have no %s.\n", objp->name); //unreachable
+		printf("You have no %s.\n", objp->name);
 		return FALSE;
 		}
 	if(!dropobject(player, objp))
@@ -112,7 +112,7 @@ else if(strcmp(verb, "drop") == 0)////////////////////////
 		}
 	printf("Dropped.\n");
 	}
-else if(strcmp(verb, "look") == 0)  //////////////////////////
+else if(strcmp(verb, "look") == 0)  
 	{
 	listroom(player);
 	}
@@ -125,45 +125,151 @@ else if(strcmp(verb, "i") == 0 || strcmp(verb, "inventory") == 0)
 		listobjects(player->contents);
 		}
 	}
-else if(strcmp(verb, "hit") == 0)
+/* if we use more than 2 arguments the parser then xobject of
+ * preposition comes into play and object posecion validation
+ * is done by the parser. Unreachable is not needed for only 2 
+ * arguments entries (see above)*/
+else if(strcmp(verb, "break") == 0)//+
 	{
 	if(objp == NULL)
 		{
 		printf("You must tell me what to hit.\n");
 		return FALSE;
 		}
-
 	if(cmd->preposition == NULL || strcmp(cmd->preposition, "with") != 0 ||
 			cmd->xobject == NULL)
 		{
-		printf("You must tell me what to hit with.\n");
+		printf("You must tell me what to break with.\n");
 		return FALSE;
 		}
-	if(!contains(player->contents, cmd->xobject)) //unreachable
+	if(!(cmd->xobject->attrs & HEAVY))
 		{
-		printf("You don't have the %s.\n", cmd->xobject->name);
+		ch = getLast(cmd->xobject->name); //+
+		printf("I don't think the %s %s heavy enough to break things with.\n",
+		cmd->xobject->name, 	*ch == 's'? "are" : "is" );
 		return FALSE;
 		}
-	ch = getLast(objp->name); //+ last char plural
-	printf("The %s say%s, \"Ouch!\"\n", objp->name,
-		*ch == 's'? "" : "s" ); //+ plural
+	objp->attrs |= BROKEN;
+	ch = getLast(objp->name);  //+
+	printf("The %s %s broken\n", objp->name,
+		*ch == 's'? "is" : "are" );  
 	}
-else if(strcmp(verb, "break") == 0)
+else if(strcmp(verb, "cut") == 0)
 	{
 	if(objp == NULL)
 		{
-		printf("You must tell me what to break.\n");
+		printf("You must tell me what to cut.\n");
 		return FALSE;
 		}
-	if(!contains(player->contents, cmd->object))
+	if(cmd->preposition == NULL || strcmp(cmd->preposition, "with") != 0 ||
+			cmd->xobject == NULL)
 		{
-		printf("You don't have the %s.\n", cmd->object->name);
+		printf("You must tell me what to cut with.\n");
 		return FALSE;
 		}
-	ch = getLast(objp->name); //+ 
-	printf("The %s say%s, \"%s broken!\"\n", objp->name,
-		*ch == 's'? "" : "s", *ch == 's'? "We're" : "I'm" ); //+ plural
+	if(!(cmd->xobject->attrs & SHARP))
+		{
+		ch = getLast(cmd->xobject->name); //+
+		printf("I don't think the %s %s sharp enough to cut things with.\n",
+		cmd->xobject->name,*ch == 's'? "are" : "is" );
+		return FALSE;
+		}
+		if(!(objp->attrs & SOFT))
+			{
+			printf("I don't think you can cut the %s with the %s.\n",
+			objp->name, cmd->xobject->name);
+			return FALSE;
+			}
+		ch = getLast(objp->name);
+		printf("The %s %s now cut in two.\n", objp->name,
+			*ch == 's'? "is" : "are");
+		}
+//+ Week4 commands: open, close, put
+/////////////////////////////////////
+else if(strcmp(verb, "open") == 0)
+	{
+	if(objp == NULL)
+		{
+		printf("You must tell me what to open.\n");
+		return FALSE;
+		}
+	if(Isopen(objp))
+		{
+		printf("The %s is already open.\n", objp->name);
+		return FALSE;
+		}
+	if(!(objp->attrs & CLOSABLE))
+		{
+		printf("You can't open the %s.\n", objp->name);
+		return FALSE;
+		}
+	objp->attrs |= OPEN;
+	printf("The %s is now open.\n", objp->name);
 	}
+
+else if(strcmp(verb, "close") == 0)
+	{
+	if(objp == NULL)
+		{
+		printf("You must tell me what to close.\n");
+		return FALSE;
+		}
+	if(!(objp->attrs & CLOSABLE))
+		{
+		printf("You can't close the %s.\n", objp->name);
+		return FALSE;
+		}
+	if(!Isopen(objp))
+		{
+		printf("The %s is already closed.\n", objp->name);
+		return FALSE;
+		}
+	objp->attrs &= ~OPEN;
+	printf("The %s is now closed.\n", objp->name);
+	}
+
+else if(strcmp(verb, "put") == 0)
+	{
+	if(objp == NULL)
+		{
+		printf("You must tell me what to put.\n");
+		return FALSE;
+		}
+	if(!contains(player->contents, objp))
+		{
+		printf("You don't have the %s.\n", objp->name);
+		return FALSE;
+		}
+	if(cmd->preposition == NULL || strcmp(cmd->preposition, "in") != 0 ||
+			cmd->xobject == NULL)
+		{
+		printf("You must tell me where to put the %s.\n",
+							objp->name);
+		return FALSE;
+		}
+	if(!Iscontainer(cmd->xobject))
+		{
+		printf("You can't put things in the %s.\n",
+							cmd->xobject->name);
+		return FALSE;
+		}
+	if((cmd->xobject->attrs & CLOSABLE) && !Isopen(cmd->xobject))
+		{
+		printf("The %s is closed.\n", cmd->xobject->name);
+		return FALSE;
+		}
+	if(!putobject(player, objp, cmd->xobject))
+		{
+		/* shouldn't happen */
+		printf("You can't put the %s in the %s!\n",
+			objp->name, cmd->xobject->name);
+		return FALSE;
+		}
+	printf("Now the %s is in the %s.\n",
+			objp->name, cmd->xobject->name);
+	}
+////////////////////////////////
+
 else if(strcmp(verb, "quit") == 0)
 	{
 	exit(0);

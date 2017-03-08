@@ -15,7 +15,7 @@ int i;
 
 if(nrooms >= MAXROOMS)
 	{
-	fprintf(stderr, "too many rooms\n");
+	fprintf(stderr, "too many rooms\n"); 
 	exit(1);
 	}
 
@@ -71,10 +71,10 @@ if(roomp->contents != NULL)
 	}
 /*Future: A space is getting added before every new ? request
 not necessarilly because dungeon.dat has av[2]!="description"
-Adding a fake av[2] doesnt print the wrong argument*///+
-if(roomp->description != NULL)//+
+Adding a fake av[2] doesnt print the wrong argument*/
+if(roomp->desc != NULL)
 	{
-	printf("%s\n", roomp->description);
+	printf("%s\n", roomp->desc);
 	}
 }
 

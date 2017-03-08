@@ -36,7 +36,7 @@ return TRUE;
 
 static parsedatafile(FILE *fp)
 {
-	char line[MAXLINE], lineCopy[MAXLINE]; //+
+	char line[MAXLINE], lineCopy[MAXLINE]; 
 int ac;
 char *av[MAXARGS];
 struct room *currentroom = NULL;
@@ -44,16 +44,17 @@ struct object *currentobject = NULL;
 
 while(fgetline(fp, line, MAXLINE) != EOF)
 	{
-	strcpy(lineCopy, line); //+
+	strcpy(lineCopy, line); 
 	if(*line == '#')
 		continue;
 	ac = getwords(line, av, MAXARGS);
 	if(ac == 0)
 		continue;
-	if(strcmp(av[0], "room") == 0)//////////////////////////// 
+	if(strcmp(av[0], "room") == 0)
 		{
-		/*changed from room to object*/
-		currentobject = NULL;	//+
+		/*changed from room to object, the word room is
+		* the only that clears the current object*/
+		currentobject = NULL;	
 		if(ac < 2)
 			fprintf(stderr, "missing room name\n");
 		else if(strcmp(av[1], "end") != 0)
@@ -62,7 +63,7 @@ while(fgetline(fp, line, MAXLINE) != EOF)
 			}
 		}
 	
-	else if(strcmp(av[0], "object") == 0)///////////////////////
+	else if(strcmp(av[0], "object") == 0)
 		{
 	
 		if(ac < 2)
@@ -77,16 +78,56 @@ while(fgetline(fp, line, MAXLINE) != EOF)
 			}
 		}
 
-	else if(strcmp(av[0], "desc") == 0)//+
+	else if(strcmp(av[0], "description") == 0)
 	{
 		char *p;
 		for(p = lineCopy; !isspace(*p); p++);	/* skip "desc" */
 		for(; isspace(*p); p++);				/* skip whitespace */
 		if(currentobject != NULL)
-			currentobject->description = chkstrdup(p);
+			currentobject->desc = chkstrdup(p);
 		else 
-			currentroom->description = chkstrdup(p);
+			currentroom->desc = chkstrdup(p);
 	}
+
+	/*if attribute after object declaration
+	* test following argument after attribute
+	* do a conditional switch that matches every possible state
+	* NOT PICKING ATTRIBUTE:
+	* 1st - desing a method to print the attributes of the object
+	* in the description to see what happens between dungeon DAT and the
+	* attribute property*/
+	else if(strcmp(av[0], "attribute") == 0)////////////////////////////////////
+		{
+	
+		if(ac < 2)
+			fprintf(stderr, "missing attribute type\n");
+		else if(strcmp(av[1], "container") != 0)
+			currentobject->attrs |= CONTAINER;
+		else if(strcmp(av[1], "closable") != 0)
+			currentobject->attrs |= CLOSABLE;
+		else if(strcmp(av[1], "open") != 0)
+			currentobject->attrs |= OPEN;
+		else if(strcmp(av[1], "heavy") != 0)
+			currentobject->attrs |= HEAVY;
+		else if(strcmp(av[1], "broken") != 0)
+			currentobject->attrs |= BROKEN;
+		else if(strcmp(av[1], "tool") != 0)
+			currentobject->attrs |= TOOL;
+		else if(strcmp(av[1], "soft") != 0)
+			currentobject->attrs |= SOFT;
+		else if(strcmp(av[1], "sharp") != 0)
+			currentobject->attrs |= SHARP;
+		else if(strcmp(av[1], "lock") != 0)
+			currentobject->attrs |= LOCK;
+		else if(strcmp(av[1], "key") != 0)
+			currentobject->attrs |= KEY;
+		else if(strcmp(av[1], "locked") != 0)
+			currentobject->attrs |= LOCKED;
+		else if(strcmp(av[1], "transparent") != 0)
+			currentobject->attrs |= TRANSPARENT;
+		else if(strcmp(av[1], "immobile") != 0)
+			currentobject->attrs |= IMMOBILE;									
+		}
 
 	else if(strcmp(av[0], "roomexits") == 0)	/* temporary */
 		{

@@ -25,7 +25,7 @@ static struct actor player;
 main()
 {
 char line[MAXLINE];
-struct sentence cmd;//+
+struct sentence cmd;
 
 if(!readdatafile())
 		exit(1);
@@ -45,7 +45,7 @@ while(TRUE)
 		continue;
 
 	docommand(&player, &cmd);
-	}//+
+	}
 
 return 0;
 }

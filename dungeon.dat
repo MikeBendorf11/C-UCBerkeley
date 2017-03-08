@@ -1,37 +1,47 @@
 room field
-desc You just woke up. You are in the middle of nowhere. 
+description You just woke up. You are in the middle of nowhere. 
 
 room house
-desc There is nowhere else to go around. 
+description There is nowhere else to go around. 
 
 room entry
-desc You are locked inside. 
+description You are locked inside. 
+object knife
+attribute sharp
+
 room hall
+object box
+attribute closable
 
 room bedroom
 object bed
-desc a small one. You can put it on your shoulder if you want.
+attribute heavy
+description a small one. You can put it on your shoulder if you want.
 
 room closet
 object diamonds
-desc shiny little bastards. They might be useful later down the road.
+description shiny little bastards. They might be useful later down the road.
 
 room kitchen
 object kettle
+attribute container
 
 room stairway
-desc Watch your way...
+description Watch your way...
 
 room basement
-desc Smells humid and smoky. 
+description Smells humid and smoky. 
 object hammer
-
+attribute tool
 object pliers
+attribute tool
+
 room porch
 object doormat
+attribute soft
 
 room tunnel
-desc Now you need to figure a way out of here. 
+description Now you need to figure a way out of here. 
 object pick
 object shovel
 

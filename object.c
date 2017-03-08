@@ -17,24 +17,54 @@
 static struct object objects[MAXOBJECTS];
 static int nobjects = 0;
 
-struct object * newobject(char *name)
-{
-struct object *objp;
-
-if(nobjects >= MAXOBJECTS)
+struct object * newobject(char *name)//+
 	{
-	fprintf(stderr, "too many objects\n");
-	exit(1);
-	}
-
+	struct object *objp;
+	if(nobjects >= MAXOBJECTS)
+		{
+		fprintf(stderr, "too many objects\n");
+		exit(1);
+		}
 objp = &objects[nobjects++];
-
 strcpy(objp->name, name);
 objp->lnext = NULL;
-
+objp->attrs = 0;
+objp->contents = NULL;
 return objp;
 }
 
+/* transfer object from actor to container */
+
+putobject(struct actor *actp, struct object *objp, struct object *container)
+{
+struct object *lp;
+struct object *prevlp = NULL;
+
+for(lp = actp->contents; lp != NULL; lp = lp->lnext)
+	{
+	if(lp == objp)				/* found it */
+		{
+		/* splice out of actor's list */
+
+		if(lp == actp->contents)	/* head of list */
+			actp->contents = lp->lnext;
+		else	prevlp->lnext = lp->lnext;
+
+		/* splice into container's list */
+
+		lp->lnext = container->contents;
+		container->contents = lp;
+
+		return TRUE;
+		}
+
+	prevlp = lp;
+	}
+
+/* didn't find it (error) */
+
+return FALSE;
+}
 
 /* Find a named object in the actor's vicinity.		*/
 /* Returns a pointer to the object structure if found;	*/
