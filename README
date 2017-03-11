@@ -19,7 +19,13 @@ Added dungeon.dat file that is parsed to create rooms, objects and descriptions 
 Implemented a way or those long descriptions to be read from the data file
 Added new command directions and room structure possibilities such as "northwest" ("nw"), "southwest" ("sw"), "up" and "down" exits
 
+ASSIGNMENT 3
 
+Integrated the sentence structure which can handle verb and preposition inputs
+Added "break" and "cut" commands and unpdated the dungeon.dat file
+Created the plural function which scans for objects' names and replies to the command inputs with gramatically coerent comments
+
+ASSIGNMENT 4
 
 --------------------------------------------
 INSTRUCTOR NOTES

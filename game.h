@@ -56,7 +56,7 @@ struct sentence
 #define TOOL		0x0020
 #define SOFT		0x0040
 #define SHARP		0x0080
-#define LOCK		0x0100
+#define SAFE		0x0100 //changed name from lock
 #define KEY			0x0200
 #define LOCKED		0x0400
 #define TRANSPARENT	0x0800

@@ -45,29 +45,41 @@ else if(strcmp(verb, "u") == 0 || strcmp(verb, "up") == 0)
 	dircommand(player, UP); 
 else if(strcmp(verb, "d") == 0 || strcmp(verb, "down") == 0)
 	dircommand(player, DOWN); 
-else if(strcmp(verb, "examine") == 0)
+else if(strcmp(verb, "examine") == 0 || strcmp(verb, "ex") == 0)
 	{
 	if(objp == NULL)
 		{
 		printf("You must tell what to examine.\n");
 		return FALSE;
 		}
-	/*objp = findobject(player, objp);
-	if(objp == NULL)
-		{
-		printf("I see no %s here.\n", objp);
-		return FALSE;
-		}*/// eliminated on week3 
 	if(contains(player->location->contents, objp)
 		||contains(player->contents, objp))
 		{
-		if(objp->desc==NULL)
+		if(objp->desc==NULL && objp->attrs==NULL)
 			printf("Nothing special about this object.\n");
-		else
+		if(objp->desc!=NULL)
 			{
 			ch = getLast(objp->name); 
 			printf("The %s %s %s.\n", objp, 
-				*ch=='s'?"are":"is" ,objp->desc); 
+			*ch=='s'?"are":"is" ,objp->desc); 
+			}
+		if(objp->attrs!=0)
+			{
+			printf("%s attributes: ", objp->name); 
+			if(objp->attrs & LOCKED)	printf("locked "); 
+			if(objp->attrs & CLOSABLE)	printf("closable "); 
+			if(objp->attrs & OPEN)	printf("open "); 
+			if(objp->attrs & HEAVY)	printf("heavy "); 
+			if(objp->attrs & BROKEN)	printf("broken "); 
+			if(objp->attrs & SOFT)	printf("soft "); 
+			if(objp->attrs & SHARP)	printf("sharp "); 
+			if(objp->attrs & TRANSPARENT)	printf("transparent "); 
+			if(objp->attrs & IMMOBILE)	printf("immobile"); 
+			if(objp->attrs & CONTAINER)	printf("container "); 
+			if(objp->attrs & TOOL)	printf("tool "); 
+			if(objp->attrs & SAFE)	printf("safe "); 
+			if(objp->attrs & KEY)	printf("key "); 
+			printf("\n");
 			}
 		return FALSE;
 		}

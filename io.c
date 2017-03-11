@@ -89,43 +89,37 @@ while(fgetline(fp, line, MAXLINE) != EOF)
 			currentroom->desc = chkstrdup(p);
 	}
 
-	/*if attribute after object declaration
-	* test following argument after attribute
-	* do a conditional switch that matches every possible state
-	* NOT PICKING ATTRIBUTE:
-	* 1st - desing a method to print the attributes of the object
-	* in the description to see what happens between dungeon DAT and the
-	* attribute property*/
-	else if(strcmp(av[0], "attribute") == 0)////////////////////////////////////
+	else if(strcmp(av[0], "attribute") == 0)
+		////////////////////////////////////
 		{
 	
 		if(ac < 2)
 			fprintf(stderr, "missing attribute type\n");
-		else if(strcmp(av[1], "container") != 0)
+		else if(strcmp(av[1], "container") == 0)
 			currentobject->attrs |= CONTAINER;
-		else if(strcmp(av[1], "closable") != 0)
+		else if(strcmp(av[1], "closable") == 0)
 			currentobject->attrs |= CLOSABLE;
-		else if(strcmp(av[1], "open") != 0)
+		else if(strcmp(av[1], "open") == 0)
 			currentobject->attrs |= OPEN;
-		else if(strcmp(av[1], "heavy") != 0)
+		else if(strcmp(av[1], "heavy") == 0)
 			currentobject->attrs |= HEAVY;
-		else if(strcmp(av[1], "broken") != 0)
+		else if(strcmp(av[1], "broken") == 0)
 			currentobject->attrs |= BROKEN;
-		else if(strcmp(av[1], "tool") != 0)
+		else if(strcmp(av[1], "tool") == 0)
 			currentobject->attrs |= TOOL;
-		else if(strcmp(av[1], "soft") != 0)
+		else if(strcmp(av[1], "soft") == 0)
 			currentobject->attrs |= SOFT;
-		else if(strcmp(av[1], "sharp") != 0)
+		else if(strcmp(av[1], "sharp") == 0)
 			currentobject->attrs |= SHARP;
-		else if(strcmp(av[1], "lock") != 0)
-			currentobject->attrs |= LOCK;
-		else if(strcmp(av[1], "key") != 0)
+		else if(strcmp(av[1], "safe") == 0) //was lock
+			currentobject->attrs |= SAFE;
+		else if(strcmp(av[1], "key") == 0)
 			currentobject->attrs |= KEY;
-		else if(strcmp(av[1], "locked") != 0)
+		else if(strcmp(av[1], "locked") == 0)
 			currentobject->attrs |= LOCKED;
-		else if(strcmp(av[1], "transparent") != 0)
+		else if(strcmp(av[1], "transparent") == 0)
 			currentobject->attrs |= TRANSPARENT;
-		else if(strcmp(av[1], "immobile") != 0)
+		else if(strcmp(av[1], "immobile") == 0)
 			currentobject->attrs |= IMMOBILE;									
 		}
 

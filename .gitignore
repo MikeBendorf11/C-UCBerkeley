@@ -1,0 +1,8 @@
+.DS_Store
+*.opensdf 
+*.suo 
+*.sdf 
+*.sln 
+*.vcxproj 
+*.filters
+/Debug

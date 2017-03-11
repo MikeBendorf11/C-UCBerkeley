@@ -12,6 +12,7 @@ attribute sharp
 room hall
 object box
 attribute closable
+attribute container
 
 room bedroom
 object bed
@@ -24,7 +25,6 @@ description shiny little bastards. They might be useful later down the road.
 
 room kitchen
 object kettle
-attribute container
 
 room stairway
 description Watch your way...
@@ -32,7 +32,7 @@ description Watch your way...
 room basement
 description Smells humid and smoky. 
 object hammer
-attribute tool
+attribute heavy
 object pliers
 attribute tool
 
@@ -57,3 +57,10 @@ roomexits kitchen s:hall e:stairway n:porch
 roomexits porch s:kitchen
 roomexits stairway d:basement u:kitchen
 roomexits basement e:stairway w:tunnel
+
+
+# commands: 
+# directions: n, s, e, w, ne, nw, se, sw, u, d
+# obj: examine, take, drop, look, inventory
+# action: open, cut, break, close, put
+# other: quit
