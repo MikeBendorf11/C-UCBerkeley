@@ -32,6 +32,17 @@ if(!readdatafile())
 
 	gotoroom(&player, getentryroom());	/* put actor in initial room */
 
+printf("********** WELCOME TO THE DUNGEON GAME ***********\n\n");
+
+printf("Type the following commands or shorcuts to play\n");
+printf("  DIRECTIONS:\n"
+	   "    north(n), south(s), east(e), west(w), ne, nw,\n" 
+	   "    se, sw, up(u), down(d)\n");
+printf("  ACTIONS:\n" 
+	   "    look(l), examine(ex), inventory(i), take, drop,\n"
+	   "    open, cut, break, close, put, quit\n\n");
+
+printf("You are in ");
 listroom(&player);
 
 while(TRUE)

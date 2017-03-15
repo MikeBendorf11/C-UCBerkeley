@@ -1,10 +1,38 @@
+
+************CURRENT WORK***********
+
+TASKS
+Add a new function findobj2 in object.c which searches for an object in a list of objects so that it can find objects when they're inside containers
+
+DESCRIPTION
+1.The findobject function is not used by any function in commands.c but only by the parser reading on 2 or 3 arg inputs
+2.Once the input is validated the docommand function call under main.c kicks in
+3. examine and take cmds will be using the obj found by the object.c/findobj2 function after successful parsing
+
+ISSUES
+1. If entering a room lists all objs and if the room has a container obj, entering the room will list all objs every time
+2. when we enter a room the function listroom is used which list all the objects using the contained listobjects function
+3. this is because commands.c command calls it
+
+ANALYSIS
+- we can eliminate this default call from main and change the look command just so only the cmd look will show the room contents.
+- This might imply changing look cmd to use listobjects/object.c function on cmd/actor->location->contents instead of a generic listroom function (problem on point 2)
+- make the look cmd a 2 argument condition, so either "room" or object can be a specified argument then if obj==container && !locked, we can call the new listobjects function
+
+ACTIONS TAKEN
+1. removed entries to auto list objects and desc from rooms.c
+2. moved these entries to commands.c but changed the roomp->contents and roomp->desc pointers to commands.c pointer syntax player->location->contents and desc (the latter because the docommand function under commands.c only takes actor and sentence as inputs)
+3. Added legend of commands and shortcuts to the beginning of the game. Should be easy for the user to scroll up if reminding is necessary
+4. Added l to look cmd and legend under notes/dungeon.dat
+5. in course... editing object.c findobj2
+
+************SUMMARY****************
+
 MY NOTES
 
 The Dungeon Game is a command line game created by Steve Summit. The basic version of the game allows an imaginary character to move between different rooms.You can type commands such as "north"("n"), "south"("s"), "east"("e") and "west"("w") to make a move and you can also pickup objects and move them around the rooms by using the commands "take" and "drop".
 
 As the C Programming Course progresses, students are required to integrate the files included on the weekly folders and add new features to the game such as directions commands, rooms, actions, objects and descriptions by making use of structures, pointers, functions, input files, etc.
-
-I'm having a good time understanding the program flow and troubleshooting some discrepancies between the code provided and the assignment objectives. The continuoustly bugging Access Violation errors have force me to gain better understanding of memory allocation. Some of my own innocent typing mistakes or code misconceptions have let me to follow the main thread process more carefully. Inyecting printf code along the lines helps to narrow down issues or prove my own theories, but in the end it's better to have a broad general understanding of what the code is doing before jumping into conclusions.
 
 ASSIGNMENT 1
 

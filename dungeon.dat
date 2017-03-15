@@ -8,11 +8,14 @@ room entry
 description You are locked inside. 
 object knife
 attribute sharp
+object purse
+attribute container
 
 room hall
 object box
 attribute closable
 attribute container
+# if attr closable then obj default state is closed
 
 room bedroom
 object bed
@@ -61,6 +64,6 @@ roomexits basement e:stairway w:tunnel
 
 # commands: 
 # directions: n, s, e, w, ne, nw, se, sw, u, d
-# obj: examine, take, drop, look, inventory
+# obj: examine(ex), take, drop, look(l), inventory(i)
 # action: open, cut, break, close, put
 # other: quit

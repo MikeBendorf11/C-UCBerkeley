@@ -33,14 +33,6 @@ else if(strcmp(verb, "e") == 0 || strcmp(verb, "east") == 0)
 	dircommand(player, EAST);
 else if(strcmp(verb, "w") == 0 || strcmp(verb, "west") == 0)
 	dircommand(player, WEST);
-else if(strcmp(verb, "ne") == 0 || strcmp(verb, "northeast") == 0)
-	dircommand(player, NORTHEAST);
-else if(strcmp(verb, "nw") == 0 || strcmp(verb, "northwest") == 0)
-	dircommand(player, NORTHWEST);
-else if(strcmp(verb, "se") == 0 || strcmp(verb, "southeast") == 0)
-	dircommand(player, SOUTHEAST);
-else if(strcmp(verb, "sw") == 0 || strcmp(verb, "southwest") == 0)
-	dircommand(player, SOUTHWEST);
 else if(strcmp(verb, "u") == 0 || strcmp(verb, "up") == 0)
 	dircommand(player, UP); 
 else if(strcmp(verb, "d") == 0 || strcmp(verb, "down") == 0)
@@ -49,7 +41,7 @@ else if(strcmp(verb, "examine") == 0 || strcmp(verb, "ex") == 0)
 	{
 	if(objp == NULL)
 		{
-		printf("You must tell what to examine.\n");
+		printf("You must tell me what to examine.\n");
 		return FALSE;
 		}
 	if(contains(player->location->contents, objp)
@@ -63,7 +55,7 @@ else if(strcmp(verb, "examine") == 0 || strcmp(verb, "ex") == 0)
 			printf("The %s %s %s.\n", objp, 
 			*ch=='s'?"are":"is" ,objp->desc); 
 			}
-		if(objp->attrs!=0)
+		if(objp->attrs!=0) // attrs is int
 			{
 			printf("%s attributes: ", objp->name); 
 			if(objp->attrs & LOCKED)	printf("locked "); 
@@ -77,7 +69,7 @@ else if(strcmp(verb, "examine") == 0 || strcmp(verb, "ex") == 0)
 			if(objp->attrs & IMMOBILE)	printf("immobile"); 
 			if(objp->attrs & CONTAINER)	printf("container "); 
 			if(objp->attrs & TOOL)	printf("tool "); 
-			if(objp->attrs & SAFE)	printf("safe "); 
+			if(objp->attrs & SAFE)	printf("safe "); //was lock
 			if(objp->attrs & KEY)	printf("key "); 
 			printf("\n");
 			}
@@ -111,11 +103,6 @@ else if(strcmp(verb, "drop") == 0)
 		printf("You must tell me what to drop.\n");
 		return FALSE;
 		}
-	if(!contains(player->contents, objp)) //unreachable
-		{
-		printf("You have no %s.\n", objp->name);
-		return FALSE;
-		}
 	if(!dropobject(player, objp))
 		{
 		/* shouldn't happen */
@@ -124,9 +111,17 @@ else if(strcmp(verb, "drop") == 0)
 		}
 	printf("Dropped.\n");
 	}
-else if(strcmp(verb, "look") == 0)  
+else if(strcmp(verb, "l") == 0 || strcmp(verb, "look") == 0) //+
 	{
-	listroom(player);
+	if(player->location->contents != NULL)
+		{
+		printf("room contains: ");
+		listobjects(player->location->contents);
+		}
+	if(player->location->desc != NULL)
+		{
+		printf("%s\n", player->location->desc);
+		}
 	}
 else if(strcmp(verb, "i") == 0 || strcmp(verb, "inventory") == 0)
 	{
@@ -137,11 +132,7 @@ else if(strcmp(verb, "i") == 0 || strcmp(verb, "inventory") == 0)
 		listobjects(player->contents);
 		}
 	}
-/* if we use more than 2 arguments the parser then xobject of
- * preposition comes into play and object posecion validation
- * is done by the parser. Unreachable is not needed for only 2 
- * arguments entries (see above)*/
-else if(strcmp(verb, "break") == 0)//+
+else if(strcmp(verb, "break") == 0)
 	{
 	if(objp == NULL)
 		{

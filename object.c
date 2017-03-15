@@ -98,6 +98,15 @@ if(actp->location != NULL)
 return NULL;
 }
 
+/*FInd's objs within container objs*/
+
+struct object * findobj2 (struct actor *actp, char *name)
+{
+struct object *lp;
+
+
+}
+
 /* Returns TRUE if object objp exists in list; FALSE otherwise. */
 /* Used as a "predicate"; for example				*/
 /*	if(!contains(actor->contents, obj))			*/
@@ -205,6 +214,6 @@ struct object *lp;
 
 for(lp = list; lp != NULL; lp = lp->lnext)
 	{
-	printf("%s\n", lp->name);
+	printf("%s ", lp->name);
 	}
 }

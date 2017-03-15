@@ -63,19 +63,8 @@ if(roomp == NULL)
 	printf("Where are you?\n");
 	return;
 	}
-printf("%s\n", roomp->name);
-if(roomp->contents != NULL)
-	{
-	printf("room contains:\n");
-	listobjects(roomp->contents);
-	}
-/*Future: A space is getting added before every new ? request
-not necessarilly because dungeon.dat has av[2]!="description"
-Adding a fake av[2] doesnt print the wrong argument*/
-if(roomp->desc != NULL)
-	{
-	printf("%s\n", roomp->desc);
-	}
+printf("location: %s\n", roomp->name);
+
 }
 
 /* Move the player to a new room.			*/
