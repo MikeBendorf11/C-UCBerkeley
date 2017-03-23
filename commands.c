@@ -76,7 +76,7 @@ else if(strcmp(verb, "examine") == 0 || strcmp(verb, "ex") == 0)
 		return FALSE;
 		}
 	}
-else if(strcmp(verb, "take") == 0)
+else if(strcmp(verb, "t") == 0 || strcmp(verb, "take") == 0)
 	{
 	if(objp == NULL)
 		{
@@ -111,13 +111,16 @@ else if(strcmp(verb, "drop") == 0)
 		}
 	printf("Dropped.\n");
 	}
-else if(strcmp(verb, "l") == 0 || strcmp(verb, "look") == 0) //+
+else if(strcmp(verb, "l") == 0 || strcmp(verb, "look") == 0) 
 	{
+		/*room contents*/
 	if(player->location->contents != NULL)
 		{
 		printf("room contains: ");
 		listobjects(player->location->contents);
+		printf("\n");
 		}
+		/*room description*/
 	if(player->location->desc != NULL)
 		{
 		printf("%s\n", player->location->desc);
@@ -128,8 +131,9 @@ else if(strcmp(verb, "i") == 0 || strcmp(verb, "inventory") == 0)
 	if(player->contents == NULL)
 		printf("You are empty handed.\n");
 	else	{
-		printf("You are carrying:\n");
+		printf("You are carrying: ");
 		listobjects(player->contents);
+		printf("\n");
 		}
 	}
 else if(strcmp(verb, "break") == 0)

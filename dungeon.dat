@@ -1,5 +1,9 @@
 room field
 description You just woke up. You are in the middle of nowhere. 
+object knife
+attribute sharp
+object purse
+attribute container
 
 room house
 description There is nowhere else to go around. 
@@ -64,6 +68,6 @@ roomexits basement e:stairway w:tunnel
 
 # commands: 
 # directions: n, s, e, w, ne, nw, se, sw, u, d
-# obj: examine(ex), take, drop, look(l), inventory(i)
+# obj: examine(ex), take(t), drop, look(l), inventory(i)
 # action: open, cut, break, close, put
 # other: quit

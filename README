@@ -1,30 +1,32 @@
 
 ************CURRENT WORK***********
 
-TASKS
-Add a new function findobj2 in object.c which searches for an object in a list of objects so that it can find objects when they're inside containers
+ TASKS
+1. Add a new function findobj2 in object.c which searches for an object in a list of objects so that it can find objects when they're inside containers
 
-DESCRIPTION
-1.The findobject function is not used by any function in commands.c but only by the parser reading on 2 or 3 arg inputs
-2.Once the input is validated the docommand function call under main.c kicks in
-3. examine and take cmds will be using the obj found by the object.c/findobj2 function after successful parsing
+2. The "take" cmd obtains an object from inside a container whether this container is in the room's or actor's possessions
 
-ISSUES
-1. If entering a room lists all objs and if the room has a container obj, entering the room will list all objs every time
-2. when we enter a room the function listroom is used which list all the objects using the contained listobjects function
-3. this is because commands.c command calls it
+ DESCRIPTION
+1. Assignment sections 4.2 and 4.3 are committed together to show the implementation of the new findobj2 function
+2. When adding a new object to a container, the parser's sentence/object is the container obj and sentence/xobject is the contained obj. The parser is only for first level text and list validation. 
+3. The findobj2 function will search in the object list after findobject has found a !NULL contents list
 
-ANALYSIS
-- we can eliminate this default call from main and change the look command just so only the cmd look will show the room contents.
-- This might imply changing look cmd to use listobjects/object.c function on cmd/actor->location->contents instead of a generic listroom function (problem on point 2)
-- make the look cmd a 2 argument condition, so either "room" or object can be a specified argument then if obj==container && !locked, we can call the new listobjects function
+ ISSUES
+1. Can we cut knife with knife?? potentially yes, not logic but depends on object properties. For now, object.c logic is limited to one object of each type and name per room/game. Room design is clue.  
+2. After finishing the 2 tasks, the program was crashing when container was in actors possessions and we tried to remove an obj from it. 
 
-ACTIONS TAKEN
-1. removed entries to auto list objects and desc from rooms.c
-2. moved these entries to commands.c but changed the roomp->contents and roomp->desc pointers to commands.c pointer syntax player->location->contents and desc (the latter because the docommand function under commands.c only takes actor and sentence as inputs)
-3. Added legend of commands and shortcuts to the beginning of the game. Should be easy for the user to scroll up if reminding is necessary
-4. Added l to look cmd and legend under notes/dungeon.dat
-5. in course... editing object.c findobj2
+ ANALYSIS
+1. Why wasn't the object.c/findobject function arguments initially conceptualized as (actor, name) instead of (object, name)? Because game.h/object struct was not a linked struct before this assignment.
+
+2. Once an object is moved to the containers list it will not be  on the the top level actor's or room's list anymore. Carrying a container doesn't mean that the contained object is part of your possessions. 
+
+3. Regarding issue N2, a program break point showed an issue when object.c/takeobject function was searching the rclist obj. After parser finds an object then the cmd takeobject enters into play.
+
+ ACTIONS TAKEN
+- Under object.c created findobj2 and changed takeobject functions 
+- Learned how to use the VS debugger with break points. It was pretty useful at uncovering issue n2. Added skip if(rclist!=NULL) to  object.c/takeobject function. 
+- Will complete 4.4 and continue with all attributes exercises in the next assignments just so it makes more sense for the structure of the readme file
+
 
 ************SUMMARY****************
 
@@ -38,7 +40,7 @@ ASSIGNMENT 1
 
 Added a long description field to the object and room structures.
 Added "examine" and "look" commands.
-"examine" shows the description of the object in the room or the actor's posessions
+"examine" shows the description of the object in the room or the actor's possessions
 "look" prints the room descriptions
 
 ASSIGNMENT 2
@@ -50,10 +52,12 @@ Added new command directions and room structure possibilities such as "northwest
 ASSIGNMENT 3
 
 Integrated the sentence structure which can handle verb and preposition inputs
-Added "break" and "cut" commands and unpdated the dungeon.dat file
-Created the plural function which scans for objects' names and replies to the command inputs with gramatically coerent comments
+Added "break" and "cut" commands and updated the dungeon.dat file
+Created the plural function which scans for objects' names and replies to the command inputs with grammatically coherent comments
 
 ASSIGNMENT 4
+
+In progress.. See above for details. 
 
 --------------------------------------------
 INSTRUCTOR NOTES

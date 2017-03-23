@@ -97,12 +97,13 @@ extern int dumpdata(char *);
 char *plural(char *);
 char * getLast(char * );
 extern struct object *newobject(char *);
-extern int putobject(struct actor *, struct object *, struct object *);//+
+extern int putobject(struct actor *, struct object *, struct object *);
 extern struct object *findobject(struct actor *, char *);
+extern struct object * findobj2 (struct object *, char *);//+
 extern int contains(struct object *, struct object *);
 extern int takeobject(struct actor *, struct object *);
 extern int dropobject(struct actor *, struct object *);
-extern int putobject(struct actor*, struct object*, struct object*); //+
+extern int putobject(struct actor*, struct object*, struct object*); 
 extern void listobjects(struct object *);
 extern void dumpobjects(FILE *);
 extern int obj_indexof(struct object *);

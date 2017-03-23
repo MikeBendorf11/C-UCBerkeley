@@ -39,7 +39,7 @@ printf("  DIRECTIONS:\n"
 	   "    north(n), south(s), east(e), west(w), ne, nw,\n" 
 	   "    se, sw, up(u), down(d)\n");
 printf("  ACTIONS:\n" 
-	   "    look(l), examine(ex), inventory(i), take, drop,\n"
+	   "    look(l), examine(ex), inventory(i), take(t), drop,\n"
 	   "    open, cut, break, close, put, quit\n\n");
 
 printf("You are in ");

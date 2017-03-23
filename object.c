@@ -17,7 +17,7 @@
 static struct object objects[MAXOBJECTS];
 static int nobjects = 0;
 
-struct object * newobject(char *name)//+
+struct object * newobject(char *name)
 	{
 	struct object *objp;
 	if(nobjects >= MAXOBJECTS)
@@ -80,6 +80,8 @@ for(lp = actp->contents; lp != NULL; lp = lp->lnext)
 	{
 	if(strcmp(lp->name, name) == 0)
 		return lp;
+	if(lp->contents !=NULL)
+		return findobj2(lp, name);
 	}
 
 /* now look in surrounding room: */
@@ -90,6 +92,8 @@ if(actp->location != NULL)
 		{
 		if(strcmp(lp->name, name) == 0)
 			return lp;
+		if(lp->contents !=NULL)
+			return findobj2(lp, name);
 		}
 	}
 
@@ -98,13 +102,17 @@ if(actp->location != NULL)
 return NULL;
 }
 
-/*FInd's objs within container objs*/
+/*Searches within the object container list. Not-recursive*/
 
-struct object * findobj2 (struct actor *actp, char *name)
+struct object * findobj2 (struct object *list, char *name) //+
 {
 struct object *lp;
-
-
+for(lp = list->contents; lp != NULL; lp = lp->lnext)
+	{
+	if(strcmp(lp->name, name) == 0)
+	return lp;
+	}
+return NULL;
 }
 
 /* Returns TRUE if object objp exists in list; FALSE otherwise. */
@@ -125,6 +133,8 @@ for(lp = list; lp != NULL; lp = lp->lnext)
 return FALSE;
 }
 
+
+
 /* Transfer object from actor's room to actor.				*/
 /* The object shound exist somewhere in the room's contents list.	*/
 /* We find it there, remove it from that list, and splice it		*/ 
@@ -133,6 +143,8 @@ return FALSE;
 takeobject(struct actor *actp, struct object *objp)
 {
 struct room *roomp = actp->location;
+struct object *rclist = actp->location->contents;	 /*room container list*/
+struct object *aclist = actp->contents;			/*actor container list	*/ 
 struct object *lp;
 struct object *prevlp = NULL;
 
@@ -162,6 +174,40 @@ for(lp = roomp->contents; lp != NULL; lp = lp->lnext)
 	prevlp = lp;
 	}
 
+/*Search in room/container_object list*/
+
+if (rclist != NULL) //
+{
+for(lp = rclist->contents; lp != NULL; lp = lp->lnext) //+
+	{
+	if(lp == objp)				
+		{
+		if(lp == rclist->contents)	
+			rclist->contents = lp->lnext;
+		else	prevlp->lnext = lp->lnext;
+		lp->lnext = actp->contents;
+		actp->contents = lp;
+		return TRUE;
+		}
+	prevlp = lp;
+	}
+}
+
+/*Search in actor/container_object list*/
+
+for(lp = aclist->contents; lp != NULL; lp = lp->lnext) //+
+	{
+	if(lp == objp)			
+		{
+		if(lp == aclist->contents)	
+			aclist->contents = lp->lnext;
+		else	prevlp->lnext = lp->lnext;
+		lp->lnext = actp->contents;
+		actp->contents = lp;
+		return TRUE;
+		}
+	prevlp = lp;
+	}
 /* didn't find it (error) */
 
 return FALSE;
