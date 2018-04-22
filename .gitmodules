@@ -1,0 +1,6 @@
+[submodule "TheDungeon"]
+	path = TheDungeon
+	url = https://github.com/MikeBendorf11/TheDungeon.git
+[submodule "IndexingCSVFiles"]
+	path = IndexingCSVFiles
+	url = https://github.com/MikeBendorf11/IndexingCSVFiles.git
